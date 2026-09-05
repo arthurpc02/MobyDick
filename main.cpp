@@ -26,10 +26,15 @@ int main()
 {
     print_narrator("It's raining outside.");
     print_narrator("You can hear a thunder strucking in the distant.");
-    print_narrator("The horses seem to go even slower than before.");
+    print_narrator("The horses seem to go even slower than before. Until they stop");
+    print_narrator("Your horseman is talking to a stranger outside.");
+    print_narrator("Both of them approach you");
 
     print_stranger("Good Evening.");
     print_stranger("We were expecting Mr. Cortes. Who are you?");
+
+    print_narrator("You notice your horseman has surrounded and gripped you from behind.");
+    print_narrator("You are stabbed by the stranger.");
 
     print_narrator("You died.");
 }
