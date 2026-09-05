@@ -14,21 +14,22 @@ namespace TermForm {
     constexpr const char* white = "\033[37m";
 }
 
+void print_narrator(const char *inp_text){
+    cout << "** " << inp_text << endl;
+}
 
+void print_stranger(const char *inp_text){
+    cout << TermForm::cyan << "Stranger: " << inp_text << TermForm::reset << endl;
+}
 
 int main()
 {
-    std::cout << TermForm::red << "Red text" << TermForm::reset << "\n";
-//           ^red code^                ^reset^
-    cout << "** Está chovendo lá fora."<< endl;
-    cout<<"** You can hear thunder strucking in the distant."<<endl;
-    cout<<"** The horses seem to go even slower than before."<<endl;
-    cout<<"** The horses seem to go even slower than before."<<endl;
+    print_narrator("It's raining outside.");
+    print_narrator("You can hear a thunder strucking in the distant.");
+    print_narrator("The horses seem to go even slower than before.");
 
-    cout<< TermForm::cyan << "Stranger: Good Evening."<< TermForm::reset <<endl;
-    cout<<"Stranger: We were expecting Mr. Cortes. Who are you?"<<endl;
+    print_stranger("Good Evening.");
+    print_stranger("We were expecting Mr. Cortes. Who are you?");
 
-
-
-    cout<<"\n** Good-bye Cruel World!"<<endl;
+    print_narrator("You died.");
 }
