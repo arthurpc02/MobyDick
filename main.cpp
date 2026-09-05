@@ -14,27 +14,52 @@ namespace TermForm {
     constexpr const char* white = "\033[37m";
 }
 
-void print_narrator(const char *inp_text){
-    cout << "** " << inp_text << endl;
-}
+class Character
+{
+    public:
+        Character()
+        {
 
-void print_stranger(const char *inp_text){
-    cout << TermForm::cyan << "Stranger: " << inp_text << TermForm::reset << endl;
-}
+        }
+
+        virtual void say(const char *text){}
+};
+
+class Narrator : public Character
+{
+    public:
+    void say(const char *text)
+    {
+        cout << "** " << text << endl;
+    }
+};
+
+class Stranger : public Character
+{
+    public:
+    void say(const char *text)
+    {
+        cout << TermForm::cyan << "Stranger: " << text << TermForm::reset << endl;
+    }
+};
 
 int main()
 {
-    print_narrator("It's raining outside.");
-    print_narrator("You can hear a thunder strucking in the distant.");
-    print_narrator("The horses seem to go even slower than before. Until they stop");
-    print_narrator("Your horseman is talking to a stranger outside.");
-    print_narrator("Both of them approach you");
+    Narrator narrator = Narrator();
+    Stranger stranger = Stranger();
 
-    print_stranger("Good Evening.");
-    print_stranger("We were expecting Mr. Cortes. Who are you?");
+    narrator.say("You wake up. It's still raining. Very lightly.");
+    narrator.say("The smell of seawater is already present in the air");
+    narrator.say("The horses seem to go even slower than before. Until they stop");
+    narrator.say("...");
+    narrator.say("Your coachman is talking to a stranger outside, on the front porch of what seems to be an inn.");
+    narrator.say("You jump out of the carriage and join them.");
 
-    print_narrator("You notice your horseman has surrounded and gripped you from behind.");
-    print_narrator("You are stabbed by the stranger.");
+    stranger.say("Good Evening.");
+    stranger.say("I need your name.");
 
-    print_narrator("You died.");
+    narrator.say("You notice your coachman has surrounded and gripped you from behind.");
+    narrator.say("You are stabbed by the stranger.");
+
+    narrator.say("You died.");
 }
