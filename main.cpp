@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 
 namespace TermForm {
     constexpr const char* reset = "\033[0m";
@@ -61,17 +62,19 @@ int main()
     stranger.say("I need your last name.");
 
     std::cin >> player_lastName;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     stranger.say(player_lastName + ", right?");
     stranger.say("Now your first name:");
     
     std::cin >> player_firstName;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     stranger.say(player_firstName + " " + player_lastName + "?");
     narrator.say("He laughs loud. One time only. And then stops. The coachman is bored and wants to be paid.");
     std::cin.get();
     narrator.say("You notice your coachman has surrounded and gripped you from behind.");
-    narrator.say("You are stabbed by the stranger.");
+    narrator.say("The stranger stabbed you.");
 
     narrator.say("You died.");
 }
