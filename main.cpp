@@ -11,6 +11,11 @@ namespace TermForm {
     constexpr const char* purple = "\033[35m";
     constexpr const char* cyan = "\033[36m";
     constexpr const char* white = "\033[37m";
+    
+    
+    constexpr const char* bg_black = "\033[40m";
+    constexpr const char* bg_cyan = "\033[46m";
+    constexpr const char* bg_white = "\033[47m";
 }
 
 class Character
@@ -42,10 +47,22 @@ class Stranger : public Character
     }
 };
 
+class System : public Character
+{
+    public:
+    void say(const std::string& text)
+    {
+        std::cout << TermForm::white << TermForm::bg_cyan;
+        std::cout << text << TermForm::reset << std::endl;
+    }
+};
+
 class InputManager
 {
     public:
-        InputManager(){}
+        InputManager(System& system) : _system(system){
+
+        }
 
         std::string readRawData(){
             std::string rawInput;
@@ -55,11 +72,13 @@ class InputManager
         }
 
         char w82proceed(){
+            _system.say("press 'Enter' to proceed");
             std::cin.get();
             return 'n';
         }
 
     private:
+        System& _system;
 
 };
 
@@ -70,8 +89,10 @@ int main()
 {
     Narrator narrator = Narrator();
     Stranger stranger = Stranger();
+    System system = System();
+    system.say("The game has started");
 
-    InputManager inp = InputManager();
+    InputManager inp = InputManager(system);
 
     narrator.say("You wake up. It's still raining. Very lightly.");
     narrator.say("The smell of seawater is already present in the air");
