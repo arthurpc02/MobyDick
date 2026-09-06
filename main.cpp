@@ -1,5 +1,7 @@
 #include <iostream>
 #include <limits>
+#include <chrono>
+#include <thread>
 
 namespace TermForm {
     constexpr const char* reset = "\033[0m";
@@ -18,6 +20,26 @@ namespace TermForm {
     constexpr const char* bg_white = "\033[47m";
 }
 
+class TextManager{
+    public:
+        TextManager(int& text_speed){
+            _char_delay = 1000 / text_speed;
+            // std::cout << _char_delay << std::endl;
+        }
+
+        void print_text(const std::string& text)
+        {
+            for(char ch: text) // ch = character
+            {
+                std::cout << ch << std::flush;
+                std::this_thread::sleep_for(std::chrono::milliseconds(_char_delay));
+            }
+        }
+
+    private:
+        int _char_delay; // in milliseconds
+};
+
 class Character
 {
     public:
@@ -34,7 +56,13 @@ class Narrator : public Character
     public:
     void say(const std::string& text)
     {
-        std::cout << text << std::endl;
+        for(char ch: text) // ch = character
+        {
+            std::cout << ch << std::flush;
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        
+        std::cout << std::endl;
     }
 };
 
@@ -85,11 +113,17 @@ class InputManager
 std::string player_lastName;
 std::string player_firstName;
 
+int text_speed = 100; // in characters per second
+
 int main()
 {
     Narrator narrator = Narrator();
     Stranger stranger = Stranger();
     System system = System();
+
+    TextManager textManager = TextManager(text_speed);
+    textManager.print_text("The game has started");
+
     system.say("The game has started");
 
     InputManager inp = InputManager(system);
