@@ -34,6 +34,7 @@ class TextManager{
                 std::cout << ch << std::flush;
                 std::this_thread::sleep_for(std::chrono::milliseconds(_char_delay));
             }
+            std::cout << TermForm::reset;
             std::cout << std::endl;
         }
 
@@ -44,23 +45,43 @@ class TextManager{
 class Character
 {
     public:
-        Character(TextManager& textManager) : _textManager(textManager)
+        Character(TextManager& textManager,
+        const char* font_color,
+        const char* bg_color,
+        std::string prefix) :
+        _textManager(textManager),
+        _font_color(font_color),
+        _bg_color(bg_color),
+        _prefix(prefix)
         {
 
         }
 
-        virtual void say(const std::string& text){}
+        void say(const std::string& text)
+        {
+            std::cout << _font_color;
+            std::cout << _bg_color;
+            _textManager.print_text(_prefix+text);
+        }
     
     private:
 
     protected:
         TextManager& _textManager;
+        const char* _font_color;
+        const char* _bg_color;
+        std::string _prefix;
 };
 
 class Narrator : public Character
 {
     public:
-        Narrator(TextManager& textManager) : Character(textManager){
+        Narrator(TextManager& textManager,
+        const char* font_color = "",
+        const char* bg_color = "",
+        std::string prefix = ""):
+        Character(textManager, font_color, bg_color, prefix)
+        {
 
         }
 
@@ -73,27 +94,26 @@ class Narrator : public Character
 class Stranger : public Character
 {
     public:
-        Stranger(TextManager& textManager) : Character(textManager){
-
-        }
-
-        void say(const std::string& text)
+        Stranger(TextManager& textManager,
+        const char* font_color = "",
+        const char* bg_color = "",
+        std::string prefix = ""):
+        Character(textManager, font_color, bg_color, prefix)
         {
-            std::cout << TermForm::cyan << "[Stranger] " << text << TermForm::reset << std::endl;
+
         }
 };
 
 class System : public Character
 {
     public:
-        System(TextManager& textManager) : Character(textManager){
-
-        }
-
-        void say(const std::string& text)
+        System(TextManager& textManager,
+        const char* font_color = "",
+        const char* bg_color = "",
+        std::string prefix = ""):
+        Character(textManager, font_color, bg_color, prefix)
         {
-            std::cout << TermForm::white << TermForm::bg_cyan;
-            std::cout << text << TermForm::reset << std::endl;
+
         }
 };
 
@@ -125,7 +145,7 @@ class InputManager
 std::string player_lastName;
 std::string player_firstName;
 
-int text_speed = 100; // in characters per second
+int text_speed = 50; // in characters per second
 
 int main()
 {
@@ -133,8 +153,8 @@ int main()
     textManager.print_text("The game has started");
 
     Narrator narrator = Narrator(textManager);
-    Stranger stranger = Stranger(textManager);
-    System system = System(textManager);
+    Stranger stranger = Stranger(textManager, TermForm::cyan, "", "[Stranger]");
+    System system = System(textManager, TermForm::white, TermForm::bg_cyan);
 
     system.say("The game has started");
 
