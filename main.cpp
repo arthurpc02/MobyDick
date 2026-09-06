@@ -42,6 +42,22 @@ class Stranger : public Character
     }
 };
 
+class InputManager
+{
+    public:
+        InputManager(){}
+
+        std::string readRawData(){
+            std::string rawInput;
+            std::cin >> rawInput;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            return rawInput;
+        }
+
+    private:
+
+};
+
 std::string player_lastName;
 std::string player_firstName;
 
@@ -49,6 +65,8 @@ int main()
 {
     Narrator narrator = Narrator();
     Stranger stranger = Stranger();
+
+    InputManager player_input = InputManager();
 
     narrator.say("You wake up. It's still raining. Very lightly.");
     narrator.say("The smell of seawater is already present in the air");
@@ -61,14 +79,12 @@ int main()
     stranger.say("Good Evening.");
     stranger.say("I need your last name.");
 
-    std::cin >> player_lastName;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    player_lastName = player_input.readRawData();
     
     stranger.say(player_lastName + ", right?");
     stranger.say("Now your first name:");
     
-    std::cin >> player_firstName;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    player_firstName = player_input.readRawData();
     
     stranger.say(player_firstName + " " + player_lastName + "?");
     narrator.say("He laughs loud. One time only. And then stops. The coachman is bored and wants to be paid.");
