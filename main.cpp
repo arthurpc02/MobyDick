@@ -34,6 +34,7 @@ class TextManager{
                 std::cout << ch << std::flush;
                 std::this_thread::sleep_for(std::chrono::milliseconds(_char_delay));
             }
+            std::cout << std::endl;
         }
 
     private:
@@ -43,46 +44,57 @@ class TextManager{
 class Character
 {
     public:
-        Character()
+        Character(TextManager& textManager) : _textManager(textManager)
         {
 
         }
 
         virtual void say(const std::string& text){}
+    
+    private:
+
+    protected:
+        TextManager& _textManager;
 };
 
 class Narrator : public Character
 {
     public:
-    void say(const std::string& text)
-    {
-        for(char ch: text) // ch = character
-        {
-            std::cout << ch << std::flush;
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        Narrator(TextManager& textManager) : Character(textManager){
+
         }
-        
-        std::cout << std::endl;
-    }
+
+        void say(const std::string& text)
+        {
+            this->_textManager.print_text(text);
+        }
 };
 
 class Stranger : public Character
 {
     public:
-    void say(const std::string& text)
-    {
-        std::cout << TermForm::cyan << "[Stranger] " << text << TermForm::reset << std::endl;
-    }
+        Stranger(TextManager& textManager) : Character(textManager){
+
+        }
+
+        void say(const std::string& text)
+        {
+            std::cout << TermForm::cyan << "[Stranger] " << text << TermForm::reset << std::endl;
+        }
 };
 
 class System : public Character
 {
     public:
-    void say(const std::string& text)
-    {
-        std::cout << TermForm::white << TermForm::bg_cyan;
-        std::cout << text << TermForm::reset << std::endl;
-    }
+        System(TextManager& textManager) : Character(textManager){
+
+        }
+
+        void say(const std::string& text)
+        {
+            std::cout << TermForm::white << TermForm::bg_cyan;
+            std::cout << text << TermForm::reset << std::endl;
+        }
 };
 
 class InputManager
@@ -117,12 +129,12 @@ int text_speed = 100; // in characters per second
 
 int main()
 {
-    Narrator narrator = Narrator();
-    Stranger stranger = Stranger();
-    System system = System();
-
     TextManager textManager = TextManager(text_speed);
     textManager.print_text("The game has started");
+
+    Narrator narrator = Narrator(textManager);
+    Stranger stranger = Stranger(textManager);
+    System system = System(textManager);
 
     system.say("The game has started");
 
