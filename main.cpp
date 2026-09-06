@@ -54,6 +54,11 @@ class InputManager
             return rawInput;
         }
 
+        char w82proceed(){
+            std::cin.get();
+            return 'n';
+        }
+
     private:
 
 };
@@ -66,12 +71,12 @@ int main()
     Narrator narrator = Narrator();
     Stranger stranger = Stranger();
 
-    InputManager player_input = InputManager();
+    InputManager inp = InputManager();
 
     narrator.say("You wake up. It's still raining. Very lightly.");
     narrator.say("The smell of seawater is already present in the air");
     narrator.say("The horses seem to go even slower than before. Until they stop");
-    std::cin.get();
+    inp.w82proceed();
     narrator.say("...");
     narrator.say("Your coachman is talking to a stranger outside, on the front porch of what seems to be an inn.");
     narrator.say("You jump out of the carriage and join them.");
@@ -79,16 +84,16 @@ int main()
     stranger.say("Good Evening.");
     stranger.say("I need your last name.");
 
-    player_lastName = player_input.readRawData();
+    player_lastName = inp.readRawData();
     
     stranger.say(player_lastName + ", right?");
     stranger.say("Now your first name:");
     
-    player_firstName = player_input.readRawData();
+    player_firstName = inp.readRawData();
     
     stranger.say(player_firstName + " " + player_lastName + "?");
     narrator.say("He laughs loud. One time only. And then stops. The coachman is bored and wants to be paid.");
-    std::cin.get();
+    inp.w82proceed();
     narrator.say("You notice your coachman has surrounded and gripped you from behind.");
     narrator.say("The stranger stabbed you.");
 
