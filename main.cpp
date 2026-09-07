@@ -57,7 +57,7 @@ class Character
         {
             if(_display_name)
             {
-                text = "[" + _name + "]" + text;
+                text = "[" + _name + "] " + text;
             }
 
             _textManager.print_text(text, _font_color, _bg_color, _textSpeed);
@@ -85,6 +85,25 @@ class InputManager
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return rawInput;
         }
+        
+        int ReadOptions(const std::string& opt1 = "", const std::string& opt2 = "", const std::string& opt3 = "", const std::string& opt4 = "", const std::string& opt5 = "", const std::string& opt6 = "")
+        {
+            _input_hint.say("1. " + opt1);
+            _input_hint.say("2. " + opt2);
+            _input_hint.say("3. " + opt3);
+            _input_hint.say("4. " + opt4);
+            _input_hint.say("5. " + opt5);
+            _input_hint.say("6. " + opt6);
+
+            int rawInput = 0;
+            while(rawInput != 1 && rawInput != 2 && rawInput != 3&& rawInput != 4 && rawInput != 5 && rawInput != 6)
+            {
+                std::cin >> rawInput;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+
+            return rawInput;
+        }
 
         char w82proceed(){
             _input_hint.say("press 'Enter' to proceed");
@@ -101,7 +120,7 @@ struct GameState{
     std::string player_lastName;
     std::string player_firstName;
     std::string ship_name;
-    
+    int player_money = 100;
 }gameState;
 
 
@@ -154,7 +173,10 @@ int main()
     delacroix.say("Now,");
     delacroix.say("It will cost you $15 for the three days at the inn.");
     
-    // int ans1 = inp.ReadOptions("Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying.");
+    int ans1 = inp.ReadOptions("Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying.");
+    if(ans1 == 1){
+        gameState.player_money -= 15;
+    }    
     
     narrator.say("He laughs loud again. One time only. And then invites you inside.");
 
