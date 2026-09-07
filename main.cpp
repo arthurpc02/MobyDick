@@ -46,7 +46,7 @@ class Character
 {
     public:
         Character(TextManager& textManager, std::string name, bool display_name = false,
-        const char* font_color = "", const char* bg_color = "", int textSpeed = 100) :
+        const char* font_color = "", const char* bg_color = "", int textSpeed = 150) :
         _textManager(textManager), _name(name), _display_name(display_name), _font_color(font_color),
         _bg_color(bg_color), _textSpeed(textSpeed)
         {
@@ -99,6 +99,7 @@ class InputManager
 
 std::string player_lastName;
 std::string player_firstName;
+std::string name_ship;
 
 int main()
 {
@@ -131,8 +132,20 @@ int main()
     stranger.say(player_firstName + " " + player_lastName + "?");
     narrator.say("He laughs loud. One time only. And then stops. The coachman is bored and wants to be paid.");
     inp.w82proceed();
-    narrator.say("You notice your coachman has surrounded and gripped you from behind.");
-    narrator.say("The stranger stabbed you.");
+    narrator.say("The Stranger throws a coin to the coachman and he immediatly prepares to leave.");
+    
+    stranger.say("I'm De La Croix. Captain Ahab and our Stakeholder put me in charge of receiving you besides other stuff.");
+    Character delacroix = Character(textManager, "De La Croix", true, TermForm::cyan);
+    delacroix.say("The Ship... hummm....");
+    delacroix.say("...");
+    delacroix.say("ermm...");
+    delacroix.say("...");
+    narrator.say("He whispers:");
+    delacroix.say("*What was its name?*");
+    
+    name_ship = inp.readRawData();
+    
+    delacroix.say(name_ship + "! I knew it.");
 
     narrator.say("You died.");
 }
