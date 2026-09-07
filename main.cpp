@@ -46,9 +46,9 @@ class Character
 {
     public:
         Character(TextManager& textManager,
-        const char* font_color,
-        const char* bg_color,
-        std::string prefix) :
+        const char* font_color = "",
+        const char* bg_color = "",
+        std::string prefix = "") :
         _textManager(textManager),
         _font_color(font_color),
         _bg_color(bg_color),
@@ -73,54 +73,10 @@ class Character
         std::string _prefix;
 };
 
-class Narrator : public Character
-{
-    public:
-        Narrator(TextManager& textManager,
-        const char* font_color = "",
-        const char* bg_color = "",
-        std::string prefix = ""):
-        Character(textManager, font_color, bg_color, prefix)
-        {
-
-        }
-
-        void say(const std::string& text)
-        {
-            this->_textManager.print_text(text);
-        }
-};
-
-class Stranger : public Character
-{
-    public:
-        Stranger(TextManager& textManager,
-        const char* font_color = "",
-        const char* bg_color = "",
-        std::string prefix = ""):
-        Character(textManager, font_color, bg_color, prefix)
-        {
-
-        }
-};
-
-class System : public Character
-{
-    public:
-        System(TextManager& textManager,
-        const char* font_color = "",
-        const char* bg_color = "",
-        std::string prefix = ""):
-        Character(textManager, font_color, bg_color, prefix)
-        {
-
-        }
-};
-
 class InputManager
 {
     public:
-        InputManager(System& system) : _system(system){
+        InputManager(Character& input_hint) : _input_hint(input_hint){
 
         }
 
@@ -132,13 +88,13 @@ class InputManager
         }
 
         char w82proceed(){
-            _system.say("press 'Enter' to proceed");
+            _input_hint.say("press 'Enter' to proceed");
             std::cin.get();
             return 'n';
         }
 
     private:
-        System& _system;
+        Character& _input_hint;
 
 };
 
@@ -152,13 +108,13 @@ int main()
     TextManager textManager = TextManager(text_speed);
     textManager.print_text("The game has started");
 
-    Narrator narrator = Narrator(textManager);
-    Stranger stranger = Stranger(textManager, TermForm::cyan, "", "[Stranger]");
-    System system = System(textManager, TermForm::white, TermForm::bg_cyan);
+    Character narrator = Character(textManager);
+    Character stranger = Character(textManager, TermForm::cyan, "", "[Stranger]");
+    Character input_hint = Character(textManager, TermForm::white, TermForm::bg_cyan);
 
-    system.say("The game has started");
+    input_hint.say("The game has started");
 
-    InputManager inp = InputManager(system);
+    InputManager inp = InputManager(input_hint);
 
     narrator.say("You wake up. It's still raining. Very lightly.");
     narrator.say("The smell of seawater is already present in the air");
