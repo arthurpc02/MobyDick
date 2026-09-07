@@ -2,6 +2,7 @@
 #include <limits>
 #include <chrono>
 #include <thread>
+#include <initializer_list>
 
 namespace TermForm {
     constexpr const char* reset = "\033[0m";
@@ -80,9 +81,7 @@ class Character
 class InputManager
 {
     public:
-        InputManager(Character& input_hint) : _input_hint(input_hint){
-
-        }
+        InputManager(Character& input_hint) : _input_hint(input_hint){        }
 
         std::string readRawData(){
             std::string rawInput;
@@ -91,17 +90,17 @@ class InputManager
             return rawInput;
         }
         
-        int ReadOptions(const std::string& opt1 = "", const std::string& opt2 = "", const std::string& opt3 = "", const std::string& opt4 = "", const std::string& opt5 = "", const std::string& opt6 = "")
+        int ReadOptions(std::initializer_list<std::string> options)
         {
-            _input_hint.say("1. " + opt1);
-            _input_hint.say("2. " + opt2);
-            _input_hint.say("3. " + opt3);
-            _input_hint.say("4. " + opt4);
-            _input_hint.say("5. " + opt5);
-            _input_hint.say("6. " + opt6);
+            int counter = 1;
+            for(const std::string& option : options)
+            {
+                _input_hint.say(std::to_string(counter) + ". " + option);
+                counter++;
+            }
 
             int rawInput = 0;
-            while(rawInput != 1 && rawInput != 2 && rawInput != 3 && rawInput != 4 && rawInput != 5 && rawInput != 6)
+            while(rawInput <= 0 || rawInput > static_cast<int>(options.size()))
             {
                 std::cin >> rawInput;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -213,8 +212,8 @@ int main()
     delacroix.say(gameState.ship_name + " leaves in three days.");
     delacroix.say("Now,");
     delacroix.say("It will cost you $15 for the three days at the inn.");
-    
-    int ans1 = inp.ReadOptions("Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying.");
+
+    int ans1 = inp.ReadOptions({"Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying."});
     if(ans1 == 1){
         gameState.remove_playerMoney(15);
     }    
