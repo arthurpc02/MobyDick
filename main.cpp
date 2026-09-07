@@ -22,13 +22,15 @@ namespace TermForm {
 
 class TextManager{
     public:
-        TextManager(int& text_speed){
-            _char_delay = 1000 / text_speed;
+        TextManager(int& default_textSpeed){
+            _char_delay = 1000 / default_textSpeed;
             // std::cout << _char_delay << std::endl;
         }
 
-        void print_text(const std::string& text)
+        void print_text(const std::string& text, const char* font_color, const char* bg_color)
         {
+            std::cout << font_color;
+            std::cout << bg_color;
             for(char ch: text) // ch = character
             {
                 std::cout << ch << std::flush;
@@ -59,14 +61,10 @@ class Character
 
         void say(const std::string& text)
         {
-            std::cout << _font_color;
-            std::cout << _bg_color;
-            _textManager.print_text(_prefix+text);
+            _textManager.print_text(_prefix+text, _font_color, _bg_color);
         }
     
     private:
-
-    protected:
         TextManager& _textManager;
         const char* _font_color;
         const char* _bg_color;
@@ -101,18 +99,15 @@ class InputManager
 std::string player_lastName;
 std::string player_firstName;
 
-int text_speed = 50; // in characters per second
+int default_textSpeed = 50; // in characters per second
 
 int main()
 {
-    TextManager textManager = TextManager(text_speed);
-    textManager.print_text("The game has started");
+    TextManager textManager = TextManager(default_textSpeed);
 
     Character narrator = Character(textManager);
     Character stranger = Character(textManager, TermForm::cyan, "", "[Stranger]");
     Character input_hint = Character(textManager, TermForm::white, TermForm::bg_cyan);
-
-    input_hint.say("The game has started");
 
     InputManager inp = InputManager(input_hint);
 
