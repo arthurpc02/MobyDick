@@ -116,21 +116,24 @@ class InputManager
 
 };
 
-struct GameState{
-    std::string player_lastName;
-    std::string player_firstName;
-    std::string ship_name;
-    int player_money = 100;
-}gameState;
-
+class GameState
+{
+    public:
+        std::string player_lastName;
+        std::string player_firstName;
+        std::string ship_name;
+        int player_money = 100;
+};
 
 int main()
 {
     TextManager textManager = TextManager();
+    GameState gameState = GameState();
 
     Character narrator = Character(textManager, "Narrator");
     Character stranger = Character(textManager, "Stranger", true, TermForm::cyan, "");
     Character input_hint = Character(textManager, "Input Hints", false, TermForm::white, TermForm::bg_cyan, 1000);
+    Character game_status = Character(textManager, "Game Status", false, TermForm::black, TermForm::bg_white);
 
     InputManager inp = InputManager(input_hint);
 
