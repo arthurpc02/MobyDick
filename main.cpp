@@ -122,7 +122,34 @@ class GameState
         std::string player_lastName;
         std::string player_firstName;
         std::string ship_name;
-        int player_money = 100;
+
+        std::string get_playerFullName()
+        {
+            return player_firstName + player_lastName;
+        }
+
+        int get_playerMoney()
+        {
+            return _player_money;
+        }
+
+        unsigned int add_playerMoney(unsigned int amount)
+        {
+            // todo: avoid overflows
+            _player_money += amount;
+            return _player_money;
+        }
+
+        unsigned int remove_playerMoney(unsigned int amount)
+        {
+            // todo: avoid overflows
+            // todo: avoid purchase when not enough money
+            _player_money -= amount;
+            return _player_money;
+        }
+
+    private:
+        unsigned int _player_money = 100;
 };
 
 int main()
@@ -178,7 +205,7 @@ int main()
     
     int ans1 = inp.ReadOptions("Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying.");
     if(ans1 == 1){
-        gameState.player_money -= 15;
+        gameState.remove_playerMoney(15);
     }    
     
     narrator.say("He laughs loud again. One time only. And then invites you inside.");
