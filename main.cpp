@@ -97,9 +97,13 @@ class InputManager
 
 };
 
-std::string player_lastName;
-std::string player_firstName;
-std::string name_ship;
+struct GameState{
+    std::string player_lastName;
+    std::string player_firstName;
+    std::string ship_name;
+    
+}gameState;
+
 
 int main()
 {
@@ -122,19 +126,19 @@ int main()
     stranger.say("Good Evening.");
     stranger.say("I need your last name.");
 
-    player_lastName = inp.readRawData();
+    gameState.player_lastName = inp.readRawData();
     
-    stranger.say(player_lastName + ", right?");
+    stranger.say(gameState.player_lastName + ", right?");
     stranger.say("Now your first name:");
     
-    player_firstName = inp.readRawData();
+    gameState.player_firstName = inp.readRawData();
     
-    stranger.say(player_firstName + " " + player_lastName + "?");
+    stranger.say(gameState.player_firstName + " " + gameState.player_lastName + "?");
     narrator.say("He laughs loud. One time only. And then stops. The coachman is bored and wants to be paid.");
     inp.w82proceed();
     narrator.say("The Stranger throws a coin to the coachman and he immediatly prepares to leave.");
     
-    stranger.say("I'm De La Croix. Captain Ahab and our Stakeholder put me in charge of receiving you besides other stuff.");
+    stranger.say("I'm De La Croix. Captain Ahab and our Stakeholders put me in charge of receiving you.");
     Character delacroix = Character(textManager, "De La Croix", true, TermForm::cyan);
     delacroix.say("The Ship... hummm....");
     delacroix.say("...");
@@ -143,9 +147,16 @@ int main()
     narrator.say("He whispers:");
     delacroix.say("*What was its name?*");
     
-    name_ship = inp.readRawData();
+    gameState.ship_name = inp.readRawData();
     
-    delacroix.say(name_ship + "! I knew it.");
+    delacroix.say(gameState.ship_name + "! I knew it.");
+    delacroix.say(gameState.ship_name + " leaves in three days.");
+    delacroix.say("Now,");
+    delacroix.say("It will cost you $15 for the three days at the inn.");
+    
+    // int ans1 = inp.ReadOptions("Really?! Take it then.", "Really?! I thought the expenses were covered?!", "Not paying.");
+    
+    narrator.say("He laughs loud again. One time only. And then invites you inside.");
 
     narrator.say("You died.");
 }
