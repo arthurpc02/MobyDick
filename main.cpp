@@ -22,26 +22,23 @@ namespace TermForm {
 
 class TextManager{
     public:
-        TextManager(int& default_textSpeed){
-            _char_delay = 1000 / default_textSpeed;
-            // std::cout << _char_delay << std::endl;
+        TextManager(){
+
         }
 
-        void print_text(const std::string& text, const char* font_color, const char* bg_color)
+        void print_text(const std::string& text, const char* font_color, const char* bg_color, int textSpeed)
         {
+            int char_delay_ms = 1000/textSpeed;
             std::cout << font_color;
             std::cout << bg_color;
             for(char ch: text) // ch = character
             {
                 std::cout << ch << std::flush;
-                std::this_thread::sleep_for(std::chrono::milliseconds(_char_delay));
+                std::this_thread::sleep_for(std::chrono::milliseconds(char_delay_ms));
             }
             std::cout << TermForm::reset;
             std::cout << std::endl;
         }
-
-    private:
-        int _char_delay; // in milliseconds
 };
 
 class Character
@@ -50,18 +47,20 @@ class Character
         Character(TextManager& textManager,
         const char* font_color = "",
         const char* bg_color = "",
-        std::string prefix = "") :
+        std::string prefix = "",
+        int textSpeed = 100) :
         _textManager(textManager),
         _font_color(font_color),
         _bg_color(bg_color),
-        _prefix(prefix)
+        _prefix(prefix),
+        _textSpeed(textSpeed)
         {
 
         }
 
         void say(const std::string& text)
         {
-            _textManager.print_text(_prefix+text, _font_color, _bg_color);
+            _textManager.print_text(_prefix+text, _font_color, _bg_color, _textSpeed);
         }
     
     private:
@@ -69,6 +68,7 @@ class Character
         const char* _font_color;
         const char* _bg_color;
         std::string _prefix;
+        int _textSpeed; // characters per second
 };
 
 class InputManager
@@ -99,15 +99,13 @@ class InputManager
 std::string player_lastName;
 std::string player_firstName;
 
-int default_textSpeed = 50; // in characters per second
-
 int main()
 {
-    TextManager textManager = TextManager(default_textSpeed);
+    TextManager textManager = TextManager();
 
     Character narrator = Character(textManager);
     Character stranger = Character(textManager, TermForm::cyan, "", "[Stranger]");
-    Character input_hint = Character(textManager, TermForm::white, TermForm::bg_cyan);
+    Character input_hint = Character(textManager, TermForm::white, TermForm::bg_cyan, "", 1000);
 
     InputManager inp = InputManager(input_hint);
 
