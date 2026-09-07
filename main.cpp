@@ -26,6 +26,7 @@ class TextManager{
 
         }
 
+        // prints text with typewriter effect
         void print_text(const std::string& text, const char* font_color, const char* bg_color, int textSpeed)
         {
             int char_delay_ms = 1000/textSpeed;
@@ -44,30 +45,30 @@ class TextManager{
 class Character
 {
     public:
-        Character(TextManager& textManager,
-        const char* font_color = "",
-        const char* bg_color = "",
-        std::string prefix = "",
-        int textSpeed = 100) :
-        _textManager(textManager),
-        _font_color(font_color),
-        _bg_color(bg_color),
-        _prefix(prefix),
-        _textSpeed(textSpeed)
+        Character(TextManager& textManager, std::string name, bool display_name = false,
+        const char* font_color = "", const char* bg_color = "", int textSpeed = 100) :
+        _textManager(textManager), _name(name), _display_name(display_name), _font_color(font_color),
+        _bg_color(bg_color), _textSpeed(textSpeed)
         {
 
         }
 
-        void say(const std::string& text)
+        void say(std::string text)
         {
-            _textManager.print_text(_prefix+text, _font_color, _bg_color, _textSpeed);
+            if(_display_name)
+            {
+                text = "[" + _name + "]" + text;
+            }
+
+            _textManager.print_text(text, _font_color, _bg_color, _textSpeed);
         }
     
     private:
         TextManager& _textManager;
+        std::string _name;
+        bool _display_name;
         const char* _font_color;
         const char* _bg_color;
-        std::string _prefix;
         int _textSpeed; // characters per second
 };
 
@@ -103,9 +104,9 @@ int main()
 {
     TextManager textManager = TextManager();
 
-    Character narrator = Character(textManager);
-    Character stranger = Character(textManager, TermForm::cyan, "", "[Stranger]");
-    Character input_hint = Character(textManager, TermForm::white, TermForm::bg_cyan, "", 1000);
+    Character narrator = Character(textManager, "Narrator");
+    Character stranger = Character(textManager, "Stranger", true, TermForm::cyan, "");
+    Character input_hint = Character(textManager, "Input Hints", false, TermForm::white, TermForm::bg_cyan, 1000);
 
     InputManager inp = InputManager(input_hint);
 
