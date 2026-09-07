@@ -123,6 +123,9 @@ class GameState
         std::string player_firstName;
         std::string ship_name;
 
+        GameState(Character& text) : _text(text){}
+
+
         std::string get_playerFullName()
         {
             return player_firstName + player_lastName;
@@ -137,6 +140,7 @@ class GameState
         {
             // todo: avoid overflows
             _player_money += amount;
+            _text.say(std::to_string(amount) + "$ was added to your wallet.");
             return _player_money;
         }
 
@@ -145,22 +149,24 @@ class GameState
             // todo: avoid overflows
             // todo: avoid purchase when not enough money
             _player_money -= amount;
+            _text.say(std::to_string(amount) + "$ was removed from your wallet.");
             return _player_money;
         }
 
     private:
+        Character& _text;
         unsigned int _player_money = 100;
 };
 
 int main()
 {
     TextManager textManager = TextManager();
-    GameState gameState = GameState();
+    Character game_status = Character(textManager, "Game Status", false, TermForm::black, TermForm::bg_white);
+    GameState gameState = GameState(game_status);
 
     Character narrator = Character(textManager, "Narrator");
-    Character stranger = Character(textManager, "Stranger", true, TermForm::cyan, "");
+    Character stranger = Character(textManager, "Stranger", true, TermForm::green, "");
     Character input_hint = Character(textManager, "Input Hints", false, TermForm::white, TermForm::bg_cyan, 1000);
-    Character game_status = Character(textManager, "Game Status", false, TermForm::black, TermForm::bg_white);
 
     InputManager inp = InputManager(input_hint);
 
@@ -188,7 +194,7 @@ int main()
     narrator.say("The Stranger throws a coin to the coachman and he immediatly prepares to leave.");
     
     stranger.say("I'm De La Croix. Captain Ahab and our Stakeholders put me in charge of receiving you.");
-    Character delacroix = Character(textManager, "De La Croix", true, TermForm::cyan);
+    Character delacroix = Character(textManager, "De La Croix", true, TermForm::green);
     delacroix.say("The Ship... hummm....");
     delacroix.say("...");
     delacroix.say("ermm...");
