@@ -16,6 +16,11 @@ namespace TermForm {
     
     
     constexpr const char* bg_black = "\033[40m";
+    constexpr const char* bg_red = "\033[41m";
+    constexpr const char* bg_green = "\033[42m";
+    constexpr const char* bg_yellow = "\033[43m";
+    constexpr const char* bg_blue = "\033[44m";
+    constexpr const char* bg_purple = "\033[45m";
     constexpr const char* bg_cyan = "\033[46m";
     constexpr const char* bg_white = "\033[47m";
 }
@@ -96,7 +101,7 @@ class InputManager
             _input_hint.say("6. " + opt6);
 
             int rawInput = 0;
-            while(rawInput != 1 && rawInput != 2 && rawInput != 3&& rawInput != 4 && rawInput != 5 && rawInput != 6)
+            while(rawInput != 1 && rawInput != 2 && rawInput != 3 && rawInput != 4 && rawInput != 5 && rawInput != 6)
             {
                 std::cin >> rawInput;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -161,12 +166,12 @@ class GameState
 int main()
 {
     TextManager textManager = TextManager();
-    Character game_status = Character(textManager, "Game Status", false, TermForm::black, TermForm::bg_white);
+    Character game_status = Character(textManager, "Game Status", false, TermForm::blue);
     GameState gameState = GameState(game_status);
 
-    Character narrator = Character(textManager, "Narrator");
-    Character stranger = Character(textManager, "Stranger", true, TermForm::green, "");
-    Character input_hint = Character(textManager, "Input Hints", false, TermForm::white, TermForm::bg_cyan, 1000);
+    Character narrator = Character(textManager, "Narrator", false, TermForm::white, TermForm::bg_black);
+    Character stranger = Character(textManager, "Stranger", true, TermForm::green, TermForm::bg_black);
+    Character input_hint = Character(textManager, "Input Hints", false, TermForm::blue, "", 1000);
 
     InputManager inp = InputManager(input_hint);
 
@@ -194,7 +199,7 @@ int main()
     narrator.say("The Stranger throws a coin to the coachman and he immediatly prepares to leave.");
     
     stranger.say("I'm De La Croix. Captain Ahab and our Stakeholders put me in charge of receiving you.");
-    Character delacroix = Character(textManager, "De La Croix", true, TermForm::green);
+    Character delacroix = Character(textManager, "De La Croix", true, TermForm::green, TermForm::bg_black);
     delacroix.say("The Ship... hummm....");
     delacroix.say("...");
     delacroix.say("ermm...");
