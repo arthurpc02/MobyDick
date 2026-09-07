@@ -1,2 +1,14 @@
+.PHONY: all clean
+
+CXX = g++
+CXX_FLAGS = -std=c++17 -Wall
+
+ifdef DEBUG
+	CXX_FLAGS += -g
+endif
+
 main: main.cpp
-	g++ main.cpp -o main
+	$(CXX) $(CXX_FLAGS) main.cpp -o main
+
+clean:
+	rm -f main
